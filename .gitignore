@@ -1,0 +1,9 @@
+# Python cache
+__pycache__/
+
+# VS Code
+.vscode/
+ 
+# Generated data files
+data/customer_360.csv
+data/customer_scorecard.csv
