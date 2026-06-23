@@ -1,5 +1,5 @@
 """
-app.py  — Streamlit Demo App
+app.py  — Streamlit App
 -----------------------------
 Functionality:
   1. Lets the user upload a CSV (customer_360 format)

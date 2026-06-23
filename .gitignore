@@ -7,3 +7,6 @@ __pycache__/
 # Generated data files
 data/customer_360.csv
 data/customer_scorecard.csv
+
+# Virtual Environments
+venv/

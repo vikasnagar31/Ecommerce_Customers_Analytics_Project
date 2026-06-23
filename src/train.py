@@ -43,7 +43,7 @@ class TypedImputer(BaseEstimator, TransformerMixin):
 
     def fit(self, X, y=None):
         self._num_cols = X.select_dtypes(include='number').columns.tolist()
-        self._obj_cols = X.select_dtypes(include='object').columns.tolist()
+        self._obj_cols = X.select_dtypes(include=['object', 'string']).columns.tolist()
         self._num_imp  = SimpleImputer(strategy=self.num_strategy).fit(X[self._num_cols])
         self._cat_imp  = SimpleImputer(strategy=self.cat_strategy).fit(X[self._obj_cols])
         return self
@@ -87,10 +87,9 @@ class EncoderTransformer(BaseEstimator, TransformerMixin):
         self.ordinal_categories = ordinal_categories   # list of lists
 
     def fit(self, X, y=None):
-        self._ohe = OneHotEncoder(drop='first', handle_unknown='ignore', sparse=False)
+        self._ohe = OneHotEncoder(drop='first', handle_unknown='ignore', sparse_output=False)
         self._ohe.fit(X[self.ohe_cols])
-        self._oe  = OrdinalEncoder(
-            categories=self.ordinal_categories, handle_unknown='use_encoded_value', unknown_value=-1)
+        self._oe  = OrdinalEncoder(categories=self.ordinal_categories, handle_unknown='use_encoded_value', unknown_value=-1)
         self._oe.fit(X[self.ordinal_cols])
         return self
 
@@ -291,8 +290,8 @@ def train_churn(cust_360, model_dir = "models/churn/") :
     print(classification_report(y_test, (y_prob >= best_t).astype(int)))
 
     # Save
-    joblib.dump(pipeline,      os.path.join(model_dir, 'churn_pipeline.pkl'))
-    joblib.dump(best_t,        os.path.join(model_dir, 'churn_threshold.pkl'))
+    joblib.dump(pipeline,  os.path.join(model_dir, 'churn_pipeline.pkl'))
+    joblib.dump(best_t,  os.path.join(model_dir, 'churn_threshold.pkl'))
     joblib.dump(LEAKAGE_COLS_CHN, os.path.join(model_dir, 'leakage_cols.pkl'))
     print(f"Saved to {model_dir}")
 
